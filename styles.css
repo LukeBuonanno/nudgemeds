@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #3b2a20;
+    color: #a8d8ff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1em;
+    background-color: #2a1d16;
+}
+
+button {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 200px;
+    height: 100%;
+    background: #2a1d16;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+main {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+video, canvas {
+    display: none;
+    width: 100%;
+    max-width: 400px;
+}
+
+.grayscale {
+    filter: grayscale(100%);
+    background-color: #222;
+    color: #ddd;
+}

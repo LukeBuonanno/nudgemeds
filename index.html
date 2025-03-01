@@ -1,119 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Medicine Scanner</title>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.4/dist/tesseract.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-    video {
-      width: 100%;
-      max-width: 600px;
-      border: 1px solid #ddd;
-    }
-    canvas {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drug Info Scanner</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-  <h1>Medicine Bottle Scanner</h1>
-  <video id="webcam" autoplay></video>
-  <canvas id="canvas"></canvas>
-  <div>
-    <p><strong>Scanned Medicine Name:</strong></p>
-    <p id="medicineName">Waiting for scan...</p>
-  </div>
+    <div class="container">
+        <header>
+            <h1>Drug Info Scanner</h1>
+            <button id="toggle-theme">Toggle Accessibility Mode</button>
+        </header>
 
-  <script>
-    // Access the webcam
-    async function startWebcam() {
-      const video = document.getElementById('webcam');
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      video.srcObject = stream;
-    }
+        <div class="sidebar">
+            <h2>Search History</h2>
+            <ul id="history-list"></ul>
+        </div>
 
-    // Capture an image from the webcam
-    function captureImage() {
-      const video = document.getElementById('webcam');
-      const canvas = document.getElementById('canvas');
-      const context = canvas.getContext('2d');
-      
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        <main>
+            <section class="scanner">
+                <button id="start-scan">Scan Barcode</button>
+                <video id="camera-preview"></video>
+                <canvas id="barcode-canvas"></canvas>
+            </section>
 
-      preprocessImage(canvas);  // Preprocess the image before OCR
-    }
+            <section class="manual-search">
+                <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
+                <button id="search-drug">Search</button>
+            </section>
 
-    // Preprocess the image (convert to grayscale, apply thresholding)
-    function preprocessImage(canvas) {
-      const context = canvas.getContext('2d');
-      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imageData.data;
-
-      // Convert to grayscale (average of RGB)
-      for (let i = 0; i < data.length; i += 4) {
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
-        const gray = (r + g + b) / 3;
-        data[i] = data[i + 1] = data[i + 2] = gray; // Set RGB to grayscale
-      }
-
-      // Apply thresholding to improve contrast
-      const threshold = 128;
-      for (let i = 0; i < data.length; i += 4) {
-        const pixelValue = data[i];  // Grayscale value
-        const color = pixelValue < threshold ? 0 : 255;
-        data[i] = data[i + 1] = data[i + 2] = color; // Set to black or white
-      }
-
-      context.putImageData(imageData, 0, 0);  // Update the canvas with processed image
-
-      processImage(canvas);
-    }
-
-    // Process the captured image with OCR (Tesseract.js)
-    function processImage(canvas) {
-      const image = canvas.toDataURL();
-      Tesseract.recognize(image, 'eng', {
-        logger: (m) => console.log(m),
-      }).then(({ data: { text } }) => {
-        console.log('OCR Result:', text);
-        // Output the medicine name into the variable
-        const medicineName = text.trim().split('\n')[0]; // Assumes the name is in the first line
-        document.getElementById('medicineName').textContent = medicineName;
-
-        // Optionally send to an API
-        sendToAPI(medicineName);
-      });
-    }
-
-    // Example function to send the name to an API
-    function sendToAPI(medicineName) {
-      const apiUrl = 'https://your-api-endpoint.com'; // Replace with your actual API URL
-      fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name: medicineName })
-      })
-      .then(response => response.json())
-      .then(data => console.log('API Response:', data))
-      .catch(error => console.error('Error:', error));
-    }
-
-    // Start the webcam when the page loads
-    window.onload = () => {
-      startWebcam();
-      setInterval(captureImage, 3000); // Capture image every 3 seconds
-    };
-  </script>
+            <section class="drug-info">
+                <h2>Drug Information</h2>
+                <p id="drug-name">Name: <span>-</span></p>
+                <p id="drug-facts">Facts: <span>-</span></p>
+                <button id="set-reminder">Set Reminder</button>
+            </section>
+        </main>
+    </div>
 </body>
 </html>
