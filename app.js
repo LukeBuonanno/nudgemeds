@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const scanButton = document.getElementById("start-scan");
     const video = document.getElementById("camera-preview");
-    const canvas = document.getElementById("barcode-canvas");
     const drugInput = document.getElementById("drug-input");
     const searchButton = document.getElementById("search-drug");
     const drugNameElem = document.querySelector("#drug-name span");

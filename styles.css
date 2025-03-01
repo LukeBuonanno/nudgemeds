@@ -1,54 +1,107 @@
+/* General Styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     background-color: #3b2a20;
     color: #a8d8ff;
     margin: 0;
     padding: 0;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    background: #2a1d16;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 1em;
-    background-color: #2a1d16;
+/* Header */
+header h1 {
+    margin-bottom: 10px;
+    font-size: 24px;
 }
 
+/* Buttons */
 button {
+    background: #a8d8ff;
+    color: #2a1d16;
+    border: none;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #7ab8e6;
+}
+
+/* Input */
+input {
+    width: 80%;
     padding: 10px;
+    border: 2px solid #a8d8ff;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Scanner */
+.scanner-container {
+    margin: 15px 0;
+}
+
+video {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+    display: none;
+}
+
+/* Drug Info */
+.drug-info {
+    margin-top: 15px;
+    padding: 15px;
+    background: #3b2a20;
+    border-radius: 10px;
+    color: #fff;
+}
+
+/* Sidebar (History) */
+.sidebar {
+    background: #2a1d16;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    background: #5c4033;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 200px;
-    height: 100%;
-    background: #2a1d16;
-    padding: 10px;
-    overflow-y: auto;
+.sidebar li:hover {
+    background: #7a5646;
 }
 
-main {
-    margin-left: 220px;
-    padding: 20px;
-}
-
-video, canvas {
-    display: none;
-    width: 100%;
-    max-width: 400px;
-}
-
+/* Accessibility Mode */
 .grayscale {
     filter: grayscale(100%);
     background-color: #222;

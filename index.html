@@ -12,33 +12,31 @@
     <div class="container">
         <header>
             <h1>Drug Info Scanner</h1>
-            <button id="toggle-theme">Toggle Accessibility Mode</button>
         </header>
+
+        <button id="toggle-theme">🌙 Toggle Accessibility</button>
+
+        <div class="scanner-container">
+            <button id="start-scan">📷 Scan Barcode</button>
+            <video id="camera-preview"></video>
+        </div>
+
+        <div class="manual-search">
+            <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
+            <button id="search-drug">🔍 Search</button>
+        </div>
+
+        <div class="drug-info">
+            <h2>Drug Information</h2>
+            <p id="drug-name">Name: <span>-</span></p>
+            <p id="drug-facts">Facts: <span>-</span></p>
+            <button id="set-reminder">⏰ Set Reminder</button>
+        </div>
 
         <div class="sidebar">
             <h2>Search History</h2>
             <ul id="history-list"></ul>
         </div>
-
-        <main>
-            <section class="scanner">
-                <button id="start-scan">Scan Barcode</button>
-                <video id="camera-preview"></video>
-                <canvas id="barcode-canvas"></canvas>
-            </section>
-
-            <section class="manual-search">
-                <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
-                <button id="search-drug">Search</button>
-            </section>
-
-            <section class="drug-info">
-                <h2>Drug Information</h2>
-                <p id="drug-name">Name: <span>-</span></p>
-                <p id="drug-facts">Facts: <span>-</span></p>
-                <button id="set-reminder">Set Reminder</button>
-            </section>
-        </main>
     </div>
 </body>
 </html>
