@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medicine Scanner</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.4/dist/tesseract.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    video {
+      width: 100%;
+      max-width: 600px;
+      border: 1px solid #ddd;
+    }
+    canvas {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Medicine Bottle Scanner</h1>
+  <video id="webcam" autoplay></video>
+  <canvas id="canvas"></canvas>
+  <div>
+    <p><strong>Scanned Medicine Name:</strong></p>
+    <p id="medicineName">Waiting for scan...</p>
+  </div>
+
+  <script>
+    // Access the webcam
+    async function startWebcam() {
+      const video = document.getElementById('webcam');
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+    }
+
+    // Capture an image from the webcam
+    function captureImage() {
+      const video = document.getElementById('webcam');
+      const canvas = document.getElementById('canvas');
+      const context = canvas.getContext('2d');
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      processImage(canvas);
+    }
+
+    // Process the captured image with OCR (Tesseract.js)
+    function processImage(canvas) {
+      const image = canvas.toDataURL();
+      Tesseract.recognize(image, 'eng', {
+        logger: (m) => console.log(m),
+      }).then(({ data: { text } }) => {
+        console.log('OCR Result:', text);
+        // Output the medicine name into the variable
+        const medicineName = text.trim().split('\n')[0]; // Assumes the name is in the first line
+        document.getElementById('medicineName').textContent = medicineName;
+
+        // Optionally send to an API
+        sendToAPI(medicineName);
+      });
+    }
+
+    // Example function to send the name to an API
+    function sendToAPI(medicineName) {
+      const apiUrl = 'https://your-api-endpoint.com'; // Replace with your actual API URL
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: medicineName })
+      })
+      .then(response => response.json())
+      .then(data => console.log('API Response:', data))
+      .catch(error => console.error('Error:', error));
+    }
+
+    // Start the webcam when the page loads
+    window.onload = () => {
+      startWebcam();
+      setInterval(captureImage, 3000); // Capture image every 3 seconds
+    };
+  </script>
+</body>
+</html>
